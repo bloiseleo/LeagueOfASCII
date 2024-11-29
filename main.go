@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/bloiseleo/leagueofascii/leagueofascii"
 	"github.com/bloiseleo/leagueofascii/leagueofascii/helpers"
 )
@@ -12,12 +10,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	data := leagueofascii.CreateAscII(img)
-	for y := range data {
-		row := data[y]
-		for x := range row {
-			fmt.Printf("%c", row[x])
-		}
-		fmt.Println()
-	}
+	art := leagueofascii.CreateAscII(img)
+	art.Render()
 }

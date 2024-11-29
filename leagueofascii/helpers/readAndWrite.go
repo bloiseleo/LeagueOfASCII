@@ -22,12 +22,18 @@ func ReadJpg(path string) (image.Image, error) {
 	return img, nil
 }
 
+/*
+Creates a new empty image using the bounds of the image passed by parameter
+*/
 func CreateEmptyImageFrom(img image.Image) *image.RGBA {
 	bounds := img.Bounds()
 	newImg := image.NewRGBA(bounds)
 	return newImg
 }
 
+/*
+Writes the new JPEG image to the dst path
+*/
 func WriteJpg(image image.Image, dst string, options jpeg.Options) error {
 	w, err := os.Create(dst)
 	if err != nil {

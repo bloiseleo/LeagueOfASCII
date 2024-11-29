@@ -1,6 +1,7 @@
 package leagueofascii
 
 import (
+	"fmt"
 	"image"
 
 	"github.com/bloiseleo/leagueofascii/leagueofascii/helpers"
@@ -8,7 +9,21 @@ import (
 
 const asciiChars string = "░▒▓█"
 
-func CreateAscII(image image.Image) [][]rune {
+type AscIIArt struct {
+	art [][]rune
+}
+
+func (art *AscIIArt) Render() {
+	for y := range art.art {
+		row := art.art[y]
+		for x := range row {
+			fmt.Printf("%c", row[x])
+		}
+		fmt.Println()
+	}
+}
+
+func CreateAscII(image image.Image) AscIIArt {
 	b := image.Bounds()
 	height := b.Max.Y - b.Min.Y
 	width := b.Max.X - b.Min.X
@@ -21,7 +36,10 @@ func CreateAscII(image image.Image) [][]rune {
 			uintMap[y][x] = grayScaleColor
 		}
 	}
-	return createMapOfAsciiFromAverage(uintMap)
+	art := AscIIArt{
+		art: createMapOfAsciiFromAverage(uintMap),
+	}
+	return art
 }
 
 func createMapOfAsciiFromAverage(brightnessMap [][]uint8) [][]rune {
