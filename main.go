@@ -10,7 +10,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	err = leagueofascii.GenerateNegativeImage(img, "./results/poro_negated.jpg", leagueofascii.Best_Quality)
+	err = leagueofascii.GrayScale(img, "./results/poro_grayscale.jpg")
 	if err != nil {
 		panic(err)
 	}

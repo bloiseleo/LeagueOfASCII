@@ -29,6 +29,28 @@ func main() {
 	}
 }
 ```
+### Graysacle Effect
+If you want some shades of gray, you could do the following below:
+```go
+package main
+
+import (
+	"github.com/bloiseleo/leagueofascii/leagueofascii"
+	"github.com/bloiseleo/leagueofascii/leagueofascii/helpers"
+)
+
+func main() {
+	img, err := helpers.ReadJpg("./assets/poro.jpg")
+	if err != nil {
+		panic(err)
+	}
+	err = leagueofascii.GrayScale(img, "./results/poro_grayscale.jpg")
+	if err != nil {
+		panic(err)
+	}
+}
+
+```
 
 ## Useful Links
 - [What are Premultiplied Alpha colors?](https://shawnhargreaves.com/blog/premultiplied-alpha.html)
