@@ -3,6 +3,7 @@ package helpers
 import (
 	"image"
 	"image/jpeg"
+	"image/png"
 	"os"
 )
 
@@ -20,6 +21,19 @@ func ReadJpg(path string) (image.Image, error) {
 		return nil, err
 	}
 	return img, nil
+}
+
+func ReadPNG(path string) (image.Image, error) {
+	reader, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer reader.Close()
+	img, err := png.Decode(reader)
+	if err != nil {
+		return nil, err
+	}
+	return img, err
 }
 
 /*

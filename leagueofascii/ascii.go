@@ -51,7 +51,7 @@ Create an AscII art and, before that, it creates another in-memory image that is
 */
 func CreateAscIIAndResize(img image.Image, newWidth, newHeight int) AscIIArt {
 	resize := image.NewRGBA(image.Rect(0, 0, newWidth, newHeight))
-	draw.NearestNeighbor.Scale(resize, resize.Rect, img, img.Bounds(), draw.Over, nil)
+	draw.CatmullRom.Scale(resize, resize.Rect, img, img.Bounds(), draw.Over, nil)
 	return CreateAscII(resize)
 }
 
