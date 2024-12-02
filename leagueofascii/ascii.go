@@ -5,6 +5,7 @@ import (
 	"image"
 
 	"github.com/bloiseleo/leagueofascii/leagueofascii/helpers"
+	"golang.org/x/image/draw"
 )
 
 const asciiChars string = "░▒▓█"
@@ -23,6 +24,9 @@ func (art *AscIIArt) Render() {
 	}
 }
 
+/*
+Create an AscII art from the image provided
+*/
 func CreateAscII(image image.Image) AscIIArt {
 	b := image.Bounds()
 	height := b.Max.Y - b.Min.Y
@@ -40,6 +44,15 @@ func CreateAscII(image image.Image) AscIIArt {
 		art: createMapOfAsciiFromAverage(uintMap),
 	}
 	return art
+}
+
+/*
+Create an AscII art and, before that, it creates another in-memory image that is resized to the newWidth and newHeight
+*/
+func CreateAscIIAndResize(img image.Image, newWidth, newHeight int) AscIIArt {
+	resize := image.NewRGBA(image.Rect(0, 0, newWidth, newHeight))
+	draw.NearestNeighbor.Scale(resize, resize.Rect, img, img.Bounds(), draw.Over, nil)
+	return CreateAscII(resize)
 }
 
 func createMapOfAsciiFromAverage(brightnessMap [][]uint8) [][]rune {

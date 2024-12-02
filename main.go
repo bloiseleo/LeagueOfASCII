@@ -6,10 +6,10 @@ import (
 )
 
 func main() {
-	img, err := helpers.ReadJpg("./assets/poro_white.jpg")
+	img, err := helpers.ReadJpg("./assets/poro_videogame.jpeg")
 	if err != nil {
 		panic(err)
 	}
-	art := leagueofascii.CreateAscII(img)
+	art := leagueofascii.CreateAscIIAndResize(img, 100, 100)
 	art.Render()
 }

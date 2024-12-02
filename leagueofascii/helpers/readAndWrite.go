@@ -46,3 +46,11 @@ func WriteJpg(image image.Image, dst string, options jpeg.Options) error {
 	}
 	return nil
 }
+
+/*
+Calculates the width and height of the image
+*/
+func CalculateWidthAndHeight(img image.Image) (int, int) {
+	b := img.Bounds()
+	return (b.Max.X - b.Min.X), (b.Max.Y - b.Min.Y)
+}
