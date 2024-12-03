@@ -62,7 +62,10 @@ func main() {
 	defer cache.PersistCache()
 	flag.Usage = func() {
 		fmt.Println("LeagueOfASCII - Welcome to League Of Asc II")
-		fmt.Printf("Command expected: %v <command> --flags\n", os.Args[0])
+		fmt.Println("Commands: ")
+		fmt.Println("- render: renderize a champion insde the terminal in format ASCII")
+		fmt.Println()
+		fmt.Printf("Usage: %v <command> --flags\n", os.Args[0])
 	}
 	if len(os.Args) < 2 {
 		flag.Usage()
