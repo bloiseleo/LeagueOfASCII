@@ -6,6 +6,7 @@ import (
 	"image"
 
 	"github.com/bloiseleo/leagueofascii/leagueofascii"
+	"github.com/bloiseleo/leagueofascii/leagueofascii/helpers"
 	"github.com/bloiseleo/leagueofascii/leagueofascii/riot/champions"
 )
 
@@ -15,6 +16,7 @@ type RenderCommandOptions struct {
 	Width       int
 	Height      int
 	SquareAsset bool
+	Color       bool
 }
 
 func getChampion(options RenderCommandOptions) (*champions.Champion, error) {
@@ -47,10 +49,14 @@ func RenderCommand(options RenderCommandOptions) error {
 		if options.Width <= 0 || options.Height <= 0 {
 			return fmt.Errorf("invalid width %v or height %v", options.Width, options.Height)
 		}
-		art = leagueofascii.CreateAscIIAndResize(championImage, options.Width, options.Height)
-	} else {
-		art = leagueofascii.CreateAscII(championImage)
+		championImage = helpers.ResizeImage(championImage, options.Width, options.Height)
 	}
+	if options.Color {
+		art = leagueofascii.CreateAscIIArtWithColors(championImage)
+		art.Render()
+		return nil
+	}
+	art = leagueofascii.CreateAscII(championImage)
 	art.Render()
 	return nil
 }

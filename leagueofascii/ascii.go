@@ -10,15 +10,24 @@ import (
 
 const asciiChars string = " ░▒▓█"
 
-type AscIIArt struct {
-	art [][]rune
+type AscIIArt interface {
+	AscIIMap() [][]string
+	Render()
 }
 
-func (art *AscIIArt) Render() {
+type AscIIArtGray struct {
+	art [][]string
+}
+
+func (art *AscIIArtGray) AscIIMap() [][]string {
+	return art.art
+}
+
+func (art *AscIIArtGray) Render() {
 	for y := range art.art {
 		row := art.art[y]
 		for x := range row {
-			fmt.Printf("%c", row[x])
+			fmt.Printf("%s", row[x])
 		}
 		fmt.Println()
 	}
@@ -40,10 +49,10 @@ func CreateAscII(image image.Image) AscIIArt {
 			uintMap[y][x] = grayScaleColor
 		}
 	}
-	art := AscIIArt{
+	art := AscIIArtGray{
 		art: createMapOfAsciiFromAverage(uintMap),
 	}
-	return art
+	return &art
 }
 
 /*
@@ -55,12 +64,12 @@ func CreateAscIIAndResize(img image.Image, newWidth, newHeight int) AscIIArt {
 	return CreateAscII(resize)
 }
 
-func createMapOfAsciiFromAverage(brightnessMap [][]uint8) [][]rune {
-	asciiMap := helpers.CreateRuneMap(uint32(len(brightnessMap[0])), uint32(len(brightnessMap)))
+func createMapOfAsciiFromAverage(brightnessMap [][]uint8) [][]string {
+	asciiMap := helpers.CreateStringMap(len(brightnessMap[0]), len(brightnessMap))
 	for y := range asciiMap {
 		row := asciiMap[y]
 		for x := range row {
-			asciiMap[y][x] = convertBrightnessToAscii(brightnessMap[y][x])
+			asciiMap[y][x] = string(convertBrightnessToAscii(brightnessMap[y][x]))
 		}
 	}
 	return asciiMap

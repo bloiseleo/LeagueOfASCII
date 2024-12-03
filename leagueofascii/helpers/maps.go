@@ -8,10 +8,10 @@ func CreateUintMap(width, height uint32) [][]uint8 {
 	return uintMap
 }
 
-func CreateRuneMap(width, height uint32) [][]rune {
-	runeMap := make([][]rune, height)
+func CreateStringMap(width, height int) [][]string {
+	runeMap := make([][]string, height)
 	for i := range runeMap {
-		runeMap[i] = make([]rune, width)
+		runeMap[i] = make([]string, width)
 	}
 	return runeMap
 }

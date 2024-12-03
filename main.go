@@ -18,6 +18,7 @@ func render(args []string) int {
 	var newWidth int
 	var newHeight int
 	var squareAsset bool
+	var colorized bool
 	render := flag.NewFlagSet("render", flag.ExitOnError)
 	render.StringVar(&championName, "champion", "", "Name of the champion to create the ART")
 	render.BoolVar(&help, "help", false, "Help about render command")
@@ -25,6 +26,7 @@ func render(args []string) int {
 	render.IntVar(&newWidth, "width", 0, "New Width")
 	render.IntVar(&newHeight, "height", 0, "New Height")
 	render.BoolVar(&squareAsset, "square", false, "Gets the Square Asset of the Champion")
+	render.BoolVar(&colorized, "color", false, "Add colors to it")
 	err := render.Parse(args)
 	if err != nil {
 		panic(err)
@@ -49,6 +51,7 @@ func render(args []string) int {
 		Width:       newWidth,
 		Height:      newHeight,
 		SquareAsset: squareAsset,
+		Color:       colorized,
 	})
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
