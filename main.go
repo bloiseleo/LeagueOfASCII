@@ -4,12 +4,14 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/bloiseleo/leagueofascii/leagueofascii/cache"
 	"github.com/bloiseleo/leagueofascii/leagueofascii/commands"
+	"github.com/bloiseleo/leagueofascii/leagueofascii/helpers"
 )
 
-func render(args []string) {
+func render(args []string) int {
 	var championName string
 	var help bool
 	var resize bool
@@ -34,12 +36,12 @@ func render(args []string) {
 	}
 	if help || len(args) == 0 {
 		render.Usage()
-		return
+		return 0
 	}
 	if resize && (newWidth <= 0 || newHeight <= 0) {
 		fmt.Println("Error: Resizing must get a new valid width and height")
 		render.Usage()
-		os.Exit(1)
+		return 1
 	}
 	err = commands.RenderCommand(commands.RenderCommandOptions{
 		Champion:    championName,
@@ -51,9 +53,9 @@ func render(args []string) {
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 		render.Usage()
-		os.Exit(1)
+		return 1
 	}
-	os.Exit(0)
+	return 0
 }
 
 func main() {
@@ -62,14 +64,16 @@ func main() {
 		fmt.Println("LeagueOfASCII - Welcome to League Of Asc II")
 		fmt.Printf("Command expected: %v <command> --flags\n", os.Args[0])
 	}
-	flag.Parse()
 	if len(os.Args) < 2 {
 		flag.Usage()
 		return
 	}
 	command := os.Args[1]
+	defer helpers.MeasureTime(time.Now())
 	switch command {
 	case "render":
 		render(os.Args[2:])
+	default:
+		flag.Usage()
 	}
 }

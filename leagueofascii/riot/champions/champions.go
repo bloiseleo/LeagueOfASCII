@@ -31,70 +31,70 @@ func generateChampionSquare(champion Champion, version string) string {
 	return fmt.Sprintf(CHAMPION_SQUARE, version, id)
 }
 
-func GetAllChampions() ChampionsSummary {
+func GetAllChampions() (*ChampionsSummary, error) {
 	v, ok := cache.GetKeyFromCache(cache.CHAMPIONS_KEY)
 	var response ChampionsSummary
 	if ok {
 		json.Unmarshal([]byte(v), &response)
-		return response
+		return &response, nil
 	}
 	resp, err := http.Get(CHAMPIONS_URL)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
-		panic("No 200 returned from champions")
+		return nil, fmt.Errorf("no data available at Riot Data Dragon, %v returned", resp.StatusCode)
 	}
 	err = json.NewDecoder(resp.Body).Decode(&response)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	b, err := json.Marshal(response)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	cache.SaveOnCache(cache.CHAMPIONS_KEY, string(b))
-	return response
+	return &response, nil
 }
 
-func GetChampion(key string) Champion {
+func GetChampion(key string) (*Champion, error) {
 	var champion ChampionResponse
 	url := generateChampionUrl(key)
 	resp, err := http.Get(url)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
-		panic(fmt.Sprintf("no 200 returned for %v", key))
+		return nil, fmt.Errorf("no data available at Riot Data Dragon, %v returned", resp.StatusCode)
 	}
 	err = json.NewDecoder(resp.Body).Decode(&champion)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	v, ok := champion.Data[key]
 	if !ok {
-		panic("no key in data")
+		return nil, fmt.Errorf("%v was not located inside champion.Data from DataDragon", key)
 	}
-	return v
+	return &v, nil
 }
 
-func GetChampionLoadingScreen(champion Champion) image.Image {
+func GetChampionLoadingScreen(champion Champion) (image.Image, error) {
 	url := generateChampionLoading(champion)
 	resp, err := http.Get(url)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
-		panic(fmt.Sprintf("no 200 returned for %v", url))
+		return nil, fmt.Errorf("no data availabe at Riot Data Dragon, %v returned", resp.StatusCode)
 	}
 	img, err := helpers.CreateJpegFromResponse(resp)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return img
+	return img, nil
 }
 
 func GetChampionSquareAssets(champion Champion) (image.Image, error) {

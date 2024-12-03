@@ -21,8 +21,8 @@ func getChampion(options RenderCommandOptions) (*champions.Champion, error) {
 	if options.Champion == "" {
 		return nil, errors.New("champion must be provided")
 	}
-	champion := champions.GetChampion(options.Champion)
-	return &champion, nil
+	champion, err := champions.GetChampion(options.Champion)
+	return champion, err
 }
 
 func RenderCommand(options RenderCommandOptions) error {
@@ -37,7 +37,10 @@ func RenderCommand(options RenderCommandOptions) error {
 			return err
 		}
 	} else {
-		championImage = champions.GetChampionLoadingScreen(*champion)
+		championImage, err = champions.GetChampionLoadingScreen(*champion)
+		if err != nil {
+			return err
+		}
 	}
 	var art leagueofascii.AscIIArt
 	if options.Resize {
