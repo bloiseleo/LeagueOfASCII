@@ -59,3 +59,28 @@ type ChampionsSummary struct {
 	Version string
 	Data    map[string]ChampionSummary
 }
+
+type ChampionImage struct {
+	Full   string
+	Sprite string
+	X      float64
+	Y      float64
+	W      float64
+	H      float64
+	Group  string
+}
+
+type ChampionResponse struct {
+	Type    string
+	Format  string
+	Version string
+	Data    map[string]Champion
+}
+
+type Champion struct {
+	Id    string
+	Key   string
+	Name  string
+	Title string
+	Image ChampionImage
+}

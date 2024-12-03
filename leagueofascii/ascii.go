@@ -8,7 +8,7 @@ import (
 	"golang.org/x/image/draw"
 )
 
-const asciiChars string = "░▒▓█"
+const asciiChars string = " ░▒▓█"
 
 type AscIIArt struct {
 	art [][]rune

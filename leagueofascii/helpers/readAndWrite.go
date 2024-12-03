@@ -1,9 +1,11 @@
 package helpers
 
 import (
+	"fmt"
 	"image"
 	"image/jpeg"
 	"image/png"
+	"net/http"
 	"os"
 )
 
@@ -67,4 +69,28 @@ Calculates the width and height of the image
 func CalculateWidthAndHeight(img image.Image) (int, int) {
 	b := img.Bounds()
 	return (b.Max.X - b.Min.X), (b.Max.Y - b.Min.Y)
+}
+
+func CreateJpegFromResponse(response *http.Response) (image.Image, error) {
+	contentType := response.Header.Get("Content-Type")
+	if contentType != "image/jpeg" {
+		panic(fmt.Sprintf("no image returned, %v returned", contentType))
+	}
+	img, err := jpeg.Decode(response.Body)
+	if err != nil {
+		return nil, err
+	}
+	return img, nil
+}
+
+func CreatePngFromResponse(response *http.Response) (image.Image, error) {
+	contentType := response.Header.Get("Content-Type")
+	if contentType != "image/png" {
+		panic(fmt.Sprintf("no image returned, %v returned", contentType))
+	}
+	img, err := png.Decode(response.Body)
+	if err != nil {
+		return nil, err
+	}
+	return img, nil
 }
