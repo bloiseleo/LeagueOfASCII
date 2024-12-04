@@ -41,6 +41,8 @@ Execution time: 518.7µs
 For example, the following command `leagueofascii render --champion Akali` renders Akali's Splash Screen. If the image is too big, it won't fit inside your terminal. But, if you want to resize it to be smaller, you can do the following `leagueofascii render --champion Akali --resize --width 90 --height 50`
 
 If you want to get the square of the champion, you can also do `leagueofascii render --champion Akali --resize --width 90 --height 50 --square`. It will provide you with a smaller version of the champion.
+### Render Color
+If you want to render the image with colors, you can use the `--color` flag. It'll render the entire image with all the colors.
 ## Features 
 ### Negative Effect
 If you want to create a negative image, you could do the following below:
